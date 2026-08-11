@@ -1,4 +1,4 @@
-from aiogram.types import CallbackQuery, User
+from aiogram.types import CallbackQuery, Message, User
 from dishka.integrations.aiogram import FromDishka, inject
 
 from src.application.common.interfaces.request_bus import RequestBus
@@ -9,6 +9,7 @@ from src.application.v1.usecases.profile import ProfileRequest
 @inject
 async def profile_callback(
     callback: CallbackQuery,
+    message: Message,
     user: User,
     request_bus: FromDishka[RequestBus],
 ) -> None:
@@ -20,9 +21,6 @@ async def profile_callback(
 
     await callback.answer()
 
-    if callback.message is None:
-        return
-
-    await callback.message.answer(
+    await message.answer(
         result.text,
     )

@@ -13,9 +13,11 @@ class HasUser(BaseFilter):
         return {"user": event.from_user}
 
 
-class HasMessage(BaseFilter):
+class HasAccessibleMessage(BaseFilter):
     async def __call__(
         self,
         callback: CallbackQuery,
-    ) -> bool:
-        return callback.message is not None
+    ) -> dict[str, Message] | bool:
+        if not isinstance(callback.message, Message):
+            return False
+        return {"message": callback.message}

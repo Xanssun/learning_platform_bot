@@ -1,6 +1,7 @@
 from src.application.common.bus import RequestBusImpl
 
 from .knowledge import KnowledgeRequest, KnowledgeUseCase
+from .language import LanguageRequest, LanguageUseCase
 from .profile import ProfileRequest, ProfileUseCase
 from .settings import SettingsRequest, SettingsUseCase
 from .start import StartRequest, StartUseCase
@@ -23,9 +24,15 @@ def setup_use_cases(request_bus: RequestBusImpl) -> None:
         KnowledgeRequest,
         KnowledgeUseCase,
     )
+    request_bus.register(
+        LanguageRequest,
+        LanguageUseCase,
+    )
 
 
 __all__ = (
+    "LanguageRequest",
+    "LanguageUseCase",
     "KnowledgeRequest",
     "KnowledgeUseCase",
     "SettingsRequest",

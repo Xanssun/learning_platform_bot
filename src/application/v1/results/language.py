@@ -1,6 +1,5 @@
 from src.application.v1.results.base import Result
 
 
-class StartResult(Result):
+class LanguageResult(Result):
     text: str
-    language_required: bool

@@ -4,6 +4,7 @@ from dishka.integrations.aiogram import FromDishka, inject
 from src.application.common.interfaces.request_bus import RequestBus
 from src.application.v1.results import StartResult
 from src.application.v1.usecases import StartRequest
+from src.presentation.v1.keyboards.language import LanguageKeyboardBuilder
 from src.presentation.v1.keyboards.main_menu import MainMenuKeyboardBuilder
 
 
@@ -13,6 +14,7 @@ async def start_router(
     user: User,
     request_bus: FromDishka[RequestBus],
     main_menu_keyboard: FromDishka[MainMenuKeyboardBuilder],
+    language_keyboard: FromDishka[LanguageKeyboardBuilder],
 ) -> None:
     result: StartResult = await request_bus.send(
         StartRequest(
@@ -20,6 +22,13 @@ async def start_router(
             username=user.username,
         )
     )
+
+    if result.language_required:
+        await msg.answer(
+            result.text,
+            reply_markup=language_keyboard.build(),
+        )
+        return
 
     await msg.answer(
         result.text,
