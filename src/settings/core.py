@@ -60,6 +60,10 @@ class RedisSettings(BaseSettings):
     host: str = "127.0.0.1"
     port: int = 6379
     password: str | None = None
+    app_key_prefix: str = "bot:app:"
+    fsm_key_prefix: str = "bot:fsm"
+    max_connections: int = 10
+    fsm_max_connections: int = 5
 
 
 class NatsSettings(BaseSettings):

@@ -221,5 +221,6 @@ __marimo__/
 # IDE
 .idea/
 .vscode/
+.uv-cache/
 *.swp
 *.swo

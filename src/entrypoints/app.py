@@ -2,7 +2,6 @@ import asyncio
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-import redis.asyncio as aioredis
 import structlog
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
@@ -15,6 +14,7 @@ from dishka import AsyncContainer
 from dishka.integrations.aiogram import AiogramProvider, setup_dishka
 
 from src.entrypoints.container import build_container
+from src.infrastructure.cache.redis import create_redis_client
 from src.infrastructure.logging.setup import setup_logging
 from src.presentation.v1.routers import setup_routers
 from src.settings.core import Settings, load_settings
@@ -47,11 +47,8 @@ async def create_app(settings: Settings) -> tuple[Dispatcher, Bot, AsyncContaine
         default=DefaultBotProperties(parse_mode="HTML"),
     )
 
-    redis = await container.get(aioredis.Redis)
-    dp = Dispatcher(storage=RedisStorage(
-        redis=redis,
-        key_builder=DefaultKeyBuilder(with_destiny=True),
-        )
+    dp = Dispatcher(
+        storage=create_fsm_storage(settings),
     )
 
     dp.include_routers(setup_routers())
@@ -63,6 +60,20 @@ async def create_app(settings: Settings) -> tuple[Dispatcher, Bot, AsyncContaine
     setup_dialogs(dp)
 
     return dp, bot, container
+
+
+def create_fsm_storage(settings: Settings) -> RedisStorage:
+    redis = create_redis_client(
+        settings.redis,
+        max_connections=settings.redis.fsm_max_connections,
+    )
+    return RedisStorage(
+        redis=redis,
+        key_builder=DefaultKeyBuilder(
+            prefix=settings.redis.fsm_key_prefix,
+            with_destiny=True,
+        ),
+    )
 
 
 async def run(settings: Settings) -> None:
