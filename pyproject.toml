@@ -1,0 +1,73 @@
+[project]
+name = "learning_platform_bot"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Mikhail" }]
+requires-python = "~=3.12.0"
+dependencies = [
+    "aiogram>=3.0.0",
+    "aiogram-dialog>=2.4.0",
+    "faststream[cli]>=0.6.7,<0.7",
+    "dishka>=1.9.1",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "orjson>=3.11.8",
+    "aioboto3>=15.5.0",
+    "redis>=7.4.0,<8",
+    "types-redis>=4.6.0.20241004,<5",
+    "nats-py>=2.14.0,<3",
+    "aiohttp>=3.13.5,<4",
+    "certifi>=2025.1.31",
+    "dishka-faststream>=0.6.0",
+    "msgpack>=1.1.0",
+    "structlog>=24.4.0",
+]
+
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0,<2",
+    "pre-commit>=4.2.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-xdist>=3.6.0",
+    "black>=24.0.0",
+    "ruff>=0.4.0",
+    "testcontainers>=4.10.0",
+]
+
+
+[tool.mypy]
+warn_unused_ignores = false
+follow_imports_for_stubs = true
+pretty = true
+show_absolute_path = true
+hide_error_codes = false
+show_error_context = true
+strict = true
+warn_unreachable = true
+warn_no_return = true
+
+[tool.ruff]
+lint.ignore = ["E501", "B008", "C901", "W191", "UP007", "UP006", "UP035"]
+
+lint.select = ["E", "W", "F", "I", "C", "B", "UP"]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+addopts = [
+    "-p", "no:warnings",
+    "--strict-markers",
+    "-n", "auto",
+    "--dist", "loadfile",
+]
+markers = [
+    "unit: fast tests with no I/O (mocks/fakes only)",
+    "integration: tests with real DB/Redis/NATS via testcontainers",
+    "e2e: full HTTP-stack tests through real app + DB",
+    "slow: tests over 1 second",
+]
