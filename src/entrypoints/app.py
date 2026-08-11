@@ -16,6 +16,7 @@ from dishka.integrations.aiogram import AiogramProvider, setup_dishka
 
 from src.entrypoints.container import build_container
 from src.infrastructure.logging.setup import setup_logging
+from src.presentation.v1.routers import setup_routers
 from src.settings.core import Settings, load_settings
 
 log = structlog.get_logger(__name__)
@@ -53,12 +54,13 @@ async def create_app(settings: Settings) -> tuple[Dispatcher, Bot, AsyncContaine
         )
     )
 
-    setup_dishka(container, dp)
-    setup_dialogs(dp)
+    dp.include_routers(setup_routers())
 
-    # setup routers
     # setup middlewares
     # setup exceptions handlers
+
+    setup_dishka(container, dp, auto_inject=True)
+    setup_dialogs(dp)
 
     return dp, bot, container
 
