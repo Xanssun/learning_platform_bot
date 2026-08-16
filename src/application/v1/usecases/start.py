@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from src.application.common.interfaces.cache import StrCache
 from src.application.common.interfaces.usecase import UseCase
 from src.application.common.request import Request
 from src.application.v1.results.start import StartResult
@@ -13,6 +14,8 @@ class StartRequest(Request):
 
 @dataclass(slots=True)
 class StartUseCase(UseCase[StartRequest, StartResult]):
+    cache: StrCache
+
     async def __call__(self, request: StartRequest) -> StartResult:
 
         #TODO: Request on the backend, select or create a user.
@@ -20,16 +23,11 @@ class StartUseCase(UseCase[StartRequest, StartResult]):
         # Temporary stub until Learning Platform integration is implemented.
         user = UserResponse(
             id=request.telegram_user_id,
-            language=None,  # TODO: Get the user's language from the backend.
+            username="frogload",
+            locale=None,  # Get the user's language from the backend.
         )
 
-        if user.language is None:
-            return StartResult(
-                text="Выберите язык:",
-                language_required=True,
-            )
-
         return StartResult(
-            text=f"Привет, {request.username}! Добро пожаловать в learning platform.",
-            language_required=False,
+            username=user.username,
+            locale=user.locale,
         )

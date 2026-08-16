@@ -12,7 +12,7 @@ class LanguageKeyboardBuilder(BaseInlineKeyboardBuilder):
                     InlineKeyboardButton(
                         text="🇷🇺 Русский",
                         callback_data=LanguageCallback(
-                            language="ru",
+                            locale="ru",
                         ).pack(),
                     ),
                 ],
@@ -20,7 +20,7 @@ class LanguageKeyboardBuilder(BaseInlineKeyboardBuilder):
                     InlineKeyboardButton(
                         text="🇬🇧 English",
                         callback_data=LanguageCallback(
-                            language="en",
+                            locale="en",
                         ).pack(),
                     ),
                 ],

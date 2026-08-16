@@ -23,14 +23,14 @@ async def start_router(
         )
     )
 
-    if result.language_required:
+    if result.locale is None:
         await msg.answer(
-            result.text,
+            "Choose a language:",
             reply_markup=language_keyboard.build(),
         )
         return
 
     await msg.answer(
-        result.text,
+        f"Hello, {result.username}! Welcome to Learning Platform.",
         reply_markup=main_menu_keyboard.build(),
     )

@@ -6,4 +6,4 @@ class MenuCallback(CallbackData, prefix="menu"):
 
 
 class LanguageCallback(CallbackData, prefix="language"):
-    language: str
+    locale: str

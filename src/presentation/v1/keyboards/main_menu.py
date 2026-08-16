@@ -10,19 +10,19 @@ class MainMenuKeyboardBuilder(BaseInlineKeyboardBuilder):
             inline_keyboard=[
                 [
                     InlineKeyboardButton(
-                        text="👤 Профиль",
+                        text="👤 Profile",
                         callback_data=MenuCallback(action="profile").pack(),
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        text="📚 База знаний",
+                        text="📚 Knowledge Base",
                         callback_data=MenuCallback(action="knowledge").pack(),
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        text="⚙️ Настройки",
+                        text="⚙️ Settings",
                         callback_data=MenuCallback(action="settings").pack(),
                     ),
                 ],

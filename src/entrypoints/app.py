@@ -21,7 +21,6 @@ from src.settings.core import Settings, load_settings
 
 log = structlog.get_logger(__name__)
 
-
 @asynccontextmanager
 async def lifespan(settings: Settings) -> AsyncIterator[tuple[Dispatcher, Bot]]:
     log.info("Startup")
@@ -52,9 +51,6 @@ async def create_app(settings: Settings) -> tuple[Dispatcher, Bot, AsyncContaine
     )
 
     dp.include_routers(setup_routers())
-
-    # setup middlewares
-    # setup exceptions handlers
 
     setup_dishka(container, dp, auto_inject=True)
     setup_dialogs(dp)
